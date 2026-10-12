@@ -33,7 +33,7 @@ export function AuthPage({ page, redirectReason, onAuthenticate }) {
         footer={(
           <>
             {isRegister ? '¿Ya tienes cuenta? ' : '¿No tienes cuenta? '}
-            <a href={isRegister ? '/login.html' : '/registro.html'}>
+            <a href={`${import.meta.env.BASE_URL}${isRegister ? 'login.html' : 'registro.html'}`}>
               {isRegister ? 'Inicia sesión' : 'Regístrate aquí'}
             </a>
           </>

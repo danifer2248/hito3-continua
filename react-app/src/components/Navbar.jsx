@@ -15,7 +15,7 @@ function NavbarLinks({ page, loggedIn, open, onLogout }) {
         if (link.auth === 'guest' && loggedIn) return null
         return (
           <li key={link.page}>
-            <a className={page === link.page ? 'active' : undefined} href={link.href}>
+            <a className={page === link.page ? 'active' : undefined} href={`${import.meta.env.BASE_URL}${link.href.slice(1)}`}>
               {link.label}
             </a>
           </li>
@@ -31,7 +31,7 @@ export function Navbar({ page, loggedIn, cart, cartOpen, onToggleCart, onChangeQ
 
   return (
     <nav className="navbar">
-      <a href="/index.html" className="logo" aria-label="Página de inicio de Texas Chicken">
+      <a href={`${import.meta.env.BASE_URL}index.html`} className="logo" aria-label="Página de inicio de Texas Chicken">
         <span className="logo-badge">T</span>
         <span className="logo-text">Texas Chicken</span>
       </a>

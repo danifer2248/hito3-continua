@@ -17,8 +17,14 @@ const storedCart = () => {
   }
 }
 
+const basePath = import.meta.env.BASE_URL
+const pagePath = (path) => `${basePath}${path}`
+
 const currentPage = () => {
-  const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/'
+  const pathname = window.location.pathname.toLowerCase()
+  const path = (basePath !== '/' && pathname.startsWith(basePath.toLowerCase())
+    ? pathname.slice(basePath.length - 1)
+    : pathname).replace(/\/$/, '') || '/'
   if (path === '/' || path === '/index.html') return 'home'
   if (path === '/menu' || path === '/menu.html') return 'menu'
   if (path === '/login' || path === '/login.html') return 'login'
@@ -26,7 +32,8 @@ const currentPage = () => {
   return 'not-found'
 }
 
-const applicationPaths = new Set(['/', '/index.html', '/menu', '/menu.html', '/login', '/login.html', '/registro', '/registro.html'])
+const applicationPaths = new Set(['', 'index.html', 'menu', 'menu.html', 'login', 'login.html', 'registro', 'registro.html']
+  .map((path) => pagePath(path).toLowerCase().replace(/\/$/, '') || '/'))
 
 function App() {
   const [page, setPage] = useState(currentPage)
@@ -82,7 +89,7 @@ function App() {
   const addProduct = (product) => {
     if (!loggedIn) {
       sessionStorage.setItem('loginRedirectReason', 'Debes iniciar sesión para agregar productos a tu pedido.')
-      window.history.pushState({}, '', '/login.html')
+      window.history.pushState({}, '', pagePath('login.html'))
       setPage('login')
       return
     }
@@ -117,7 +124,7 @@ function App() {
     setLoggedIn(false)
     setCartOpen(false)
     window.alert('Has cerrado sesión.')
-    window.history.pushState({}, '', '/index.html')
+    window.history.pushState({}, '', pagePath('index.html'))
     setPage('home')
   }
 
@@ -125,7 +132,7 @@ function App() {
     localStorage.setItem('texasLoggedIn', 'true')
     setLoggedIn(true)
     window.alert(message)
-    window.history.pushState({}, '', '/menu.html')
+    window.history.pushState({}, '', pagePath('menu.html'))
     setPage('menu')
   }
 
@@ -148,7 +155,7 @@ function App() {
         <AuthPage page={page} redirectReason={redirectReason} onAuthenticate={authenticate} />
       )}
       {page === 'not-found' && (
-        <main className="main-container"><section className="hero page-section"><h1>Página no encontrada</h1><p>La dirección que buscas no existe.</p><a href="/index.html" className="btn-primary">Volver al inicio</a></section></main>
+        <main className="main-container"><section className="hero page-section"><h1>Página no encontrada</h1><p>La dirección que buscas no existe.</p><a href={pagePath('index.html')} className="btn-primary">Volver al inicio</a></section></main>
       )}
       <Footer page={page} />
       {toast && <Toast message={toast.message} action={toast.action} onAction={() => setCartOpen(true)} onClose={() => setToast(null)} />}

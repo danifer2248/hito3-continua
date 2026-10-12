@@ -12,7 +12,7 @@ export function HomePage() {
       <section className="hero page-section">
         <h1>El Mejor Pollo Frito del Estado</h1>
         <p>Crujiente, jugoso y preparado con la mejor receta tradicional.</p>
-        <a href="/menu.html" className="btn-primary">Ver Menú Completo</a>
+        <a href={`${import.meta.env.BASE_URL}menu.html`} className="btn-primary">Ver Menú Completo</a>
       </section>
       <section className="features page-section">
         {features.map((feature) => <FeatureCard key={feature.title} {...feature} />)}
